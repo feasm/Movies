@@ -13,12 +13,17 @@ protocol MovieListPresenterProtocol {
     func showFavouriteScreen()
 }
 
+protocol MovieListCoordinatorDelegate: class {
+    func showCategoriesScreen()
+    func showFavouriteScreen()
+}
+
 class MovieListPresenter: MovieListPresenterProtocol {
 
     var viewController: MovieListViewControllerProtocol?
-    private var coordinator: MovieListCoordinatorProtocol?
+    private var coordinator: MovieListCoordinatorDelegate?
 
-    init(coordinator: MovieListCoordinatorProtocol) {
+    init(coordinator: MovieListCoordinatorDelegate) {
         self.coordinator = coordinator
     }
 

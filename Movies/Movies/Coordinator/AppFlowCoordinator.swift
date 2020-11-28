@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AppFlowCoordinator: Coordinator {
+class AppCoordinator: Coordinator {
 
     var window: UIWindow?
     var navigationController: UINavigationController?
@@ -22,16 +22,22 @@ class AppFlowCoordinator: Coordinator {
     }
 
     func start() {
-        let coordinator = MovieListCoordinator(navigationController: navigationController, delegate: self)
-        coordinator.start()
+        let presenter = MovieListPresenter(coordinator: self)
+        let interactor = MovieListInteractor(presenter: presenter)
+        let viewController = MovieListViewController(interactor: interactor)
+        presenter.viewController = viewController
+
+        navigationController?.pushViewController(viewController, animated: true)
     }
 
 }
 
-extension AppFlowCoordinator: MovieListCoordinatorDelegate {
+extension AppCoordinator: MovieListCoordinatorDelegate {
     func showCategoriesScreen() {
-        let coordinator = MovieCategoriesCoordinator(navigationController: navigationController, delegate: self)
-        coordinator.start()
+        let viewController = UIViewController()
+        viewController.title = "Categorias"
+
+        navigationController?.pushViewController(viewController, animated: true)
     }
 
     func showFavouriteScreen() {
@@ -40,8 +46,4 @@ extension AppFlowCoordinator: MovieListCoordinatorDelegate {
 
         navigationController?.pushViewController(viewController, animated: true)
     }
-}
-
-extension AppFlowCoordinator: MovieCategoriesCoordinatorDelegate {
-
 }
